@@ -7,3 +7,5 @@ root_ou_id = "r-mcli"
 
 tfg_test_account1_id = "329178087009"
 delegated_account_id = "556240469069"
+rsm_vpn              = "66.98.96.0/20"
+

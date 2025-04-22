@@ -20,3 +20,9 @@ variable "delegated_account_id" {
   description = "AWS Account ID for delegated account where IPAM is created"
   type        = string
 }
+
+variable "rsm_vpn" {
+  description = "IP address allowed for SSH access (CIDR notation)"
+  type        = string
+  default     = "66.98.96.0/20"   
+}

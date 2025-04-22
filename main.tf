@@ -67,6 +67,7 @@ module "tgw" {
   source = "github.com/mwoldesenbet1/terraform-module-networking.git//tgw?ref=main"
   aws_regions = var.aws_regions
   delegated_account_id = var.delegated_account_id
+  rsm_vpn = var.rsm_vpn
   
   # Pass VPC IDs from the VPC module
   vpc_west_id = module.vpc.vpc_ids["us-west-2"]
