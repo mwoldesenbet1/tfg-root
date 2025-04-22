@@ -1,10 +1,10 @@
 terraform {
-  #  backend "remote" {
-  #  organization = "TFG-IPAM"
-  #    workspaces {
-  #    name = "tfg-test-ipam"
-  #  }
-  # }
+    backend "remote" {
+    organization = "TFG-IPAM"
+      workspaces {
+      name = "tfg-multi-repo"
+    }
+   }
 
   required_providers {
     aws = {
@@ -36,7 +36,7 @@ module "ipam" {
 
 # Add the VPC module
 module "vpc" {
-  source = "github.com/mwoldesenbet1/terraform-module-networking.git?ref=v1.0.0"
+  source = "github.com/mwoldesenbet1/terraform-module-networking.git//vpc?ref=v1.0.0"
   aws_regions = var.aws_regions
   
   # Map IPAM pool IDs to use for VPC CIDRs
@@ -62,7 +62,7 @@ module "ous" {
 
 # Add the Transit Gateway module
 module "tgw" {
-  source = "./modules/networking/tgw"
+  source = "github.com/mwoldesenbet1/terraform-module-networking.git//tgw?ref=v1.0.0"
   aws_regions = var.aws_regions
   delegated_account_id = var.delegated_account_id
   
