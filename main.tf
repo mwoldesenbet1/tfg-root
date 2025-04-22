@@ -34,6 +34,15 @@ module "ipam" {
   }
 }
 
+# Add the OUs module
+module "ous" {
+ source = "github.com/mwoldesenbet1/terraform-module-ous.git?ref=v1.0.0" 
+ root_ou_id    = var.root_ou_id
+ # account_email = var.account_email
+}
+
+# Add the networking module
+
 # Add the VPC module
 module "vpc" {
   source = "github.com/mwoldesenbet1/terraform-module-networking.git//vpc?ref=v1.0.0"
@@ -53,14 +62,7 @@ module "vpc" {
   depends_on = [module.ipam]
 }
 
-# Add the OUs module
-module "ous" {
- source = "github.com/mwoldesenbet1/terraform-module-ous.git?ref=v1.0.0" 
- root_ou_id    = var.root_ou_id
- # account_email = var.account_email
-}
-
-# Add the Transit Gateway module
+#Add tgw module
 module "tgw" {
   source = "github.com/mwoldesenbet1/terraform-module-networking.git//tgw?ref=v1.0.0"
   aws_regions = var.aws_regions
