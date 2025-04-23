@@ -1,10 +1,10 @@
 terraform {
-  backend "remote" {
-   organization = "TFG-IPAM"
-     workspaces {
-     name = "tfg-multi-repo"
-   }
-   }
+  # backend "remote" {
+  #organization = "TFG-IPAM"
+  #  workspaces {
+  #  name = "tfg-multi-repo"
+  # }
+  #}
 
   required_providers {
     aws = {
