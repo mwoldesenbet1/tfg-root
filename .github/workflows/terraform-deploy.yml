@@ -1,4 +1,4 @@
-name: Terraform Local State Deployment
+name: Terraform Multi-Module Deployment
 
 on:
   push:
@@ -7,6 +7,8 @@ on:
   workflow_dispatch:
 
 env:
+  TF_CLOUD_ORGANIZATION: "TFG-IPAM"
+  TF_WORKSPACE: "tfg-multi-repo"
   AWS_REGION: "us-east-1"
 
 jobs:
@@ -22,6 +24,7 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
       with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
         terraform_version: 1.5.7
 
     - name: Configure AWS Credentials
@@ -39,7 +42,3 @@ jobs:
 
     - name: Terraform Plan
       run: terraform plan
-
-    - name: Terraform Apply
-      if: github.ref == 'refs/heads/main'
-      run: terraform apply -auto-approve
