@@ -12,7 +12,7 @@ on:
 env:
   TF_CLOUD_ORGANIZATION: "TFG-IPAM"
   TF_WORKSPACE: "tfg-multi-repo"
-  AWS_REGION: "us-east-1"
+  AWS_REGION: "us-west-2"
 
 jobs:
   terraform:
