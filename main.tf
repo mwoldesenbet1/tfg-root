@@ -62,26 +62,28 @@ module "vpc" {
   depends_on = [module.ipam]
 }
 
-#Add inspection module 
-module "inspection" {
- source = "github.com/mwoldesenbet1/terraform-module-networking.git//tgw?ref=main" 
- aws_regions = var.aws_regions
+#Add Inspectin vpc module
 
-  # Map IPAM pool IDs to use for VPC CIDRs
-  ipam_pool_ids = {
-    "us-west-2-prod" = module.ipam.environment_pool_ids["us-west-2-prod"]
-  }
+module "inspection_vpc" {
+  source = "github.com/mwoldesenbet1/terraform-module-networking.git//inspection_vpc?ref=main"
 
+  # Use IPAM for the inspection VPC
+  aws_region = var.aws_region
+  ipam_pool_id = module.ipam.environment_pool_ids["us-west-2-prod"]
+  ipam_netmask_length = 16
+
+  # Number of subnets to create
+  public_subnet_count = var.public_subnet_count
+  private_subnet_count = var.private_subnet_count
+  
   providers = {
     aws.delegated_account_us-west-2 = aws.delegated_account_us-west-2
-     aws.delegated_account_us-east-1 = aws.delegated_account_us-east-1
-
+    aws.delegated_account_us-east-1 = aws.delegated_account_us-east-1
   }
-  
+
+
   depends_on = [module.ipam]
-
 }
-
 
 #Add tgw module
 module "tgw" {
@@ -95,8 +97,7 @@ module "tgw" {
   vpc_east_id = module.vpc.vpc_ids["us-east-1"]
   
   # Pass BOTH public and private subnet IDs for TGW attachments
-  # Properly reference individual subnet elements
-  vpc_west_subnet_ids = [
+    vpc_west_subnet_ids = [
     module.vpc.subnet_ids["us-west-2"][0],  # Public subnet
     module.vpc.subnet_ids["us-west-2"][1]   # Private subnet
   ]

@@ -26,3 +26,17 @@ variable "rsm_vpn" {
   type        = string
   default     = "66.98.96.0/20"   
 }
+
+#Inspection VPC variables
+
+variable "public_subnet_count" {
+  description = "Number of public subnets to create in the inspection VPC"
+  type        = number
+  default     = 2
+}
+
+variable "private_subnet_count" {
+  description = "Number of private subnets to create in the inspection VPC"
+  type        = number
+  default     = 2
+}
