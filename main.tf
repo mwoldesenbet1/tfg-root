@@ -74,6 +74,7 @@ module "inspection" {
 
   providers = {
     aws.delegated_account_us-west-2 = aws.delegated_account_us-west-2
+     aws.delegated_account_us-east-1 = aws.delegated_account_us-east-1
 
   }
   
