@@ -70,7 +70,7 @@ module "inspection_vpc" {
   # Use IPAM for the inspection VPC
   aws_region = var.aws_region
   ipam_pool_id = module.ipam.environment_pool_ids["us-west-2-prod"]
-  ipam_netmask_length = 20
+  ipam_netmask_length = 24
 
   # Number of subnets to create
   public_subnet_count = var.public_subnet_count
