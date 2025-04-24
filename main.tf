@@ -62,6 +62,26 @@ module "vpc" {
   depends_on = [module.ipam]
 }
 
+#Add inspection module 
+module "inspection" {
+ source = "github.com/mwoldesenbet1/terraform-module-networking.git//tgw?ref=main" 
+ aws_regions = var.aws_regions
+
+  # Map IPAM pool IDs to use for VPC CIDRs
+  ipam_pool_ids = {
+    "us-west-2-prod" = module.ipam.environment_pool_ids["us-west-2-prod"]
+  }
+
+  providers = {
+    aws.delegated_account_us-west-2 = aws.delegated_account_us-west-2
+
+  }
+  
+  depends_on = [module.ipam]
+
+}
+
+
 #Add tgw module
 module "tgw" {
   source = "github.com/mwoldesenbet1/terraform-module-networking.git//tgw?ref=main"
