@@ -76,6 +76,9 @@ module "inspection_vpc" {
   public_subnet_count = var.public_subnet_count
   private_subnet_count = var.private_subnet_count
   tgw_subnet_count = var.tgw_subnet_count
+
+  #TGW ID
+  transit_gateway_id = module.tgw.transit_gateway_id
   
   providers = {
     aws.delegated_account_us-west-2 = aws.delegated_account_us-west-2
