@@ -1,10 +1,6 @@
-name: Terraform Deployment
-
+name: Terraform Deployment Troubleshoot
 on:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
   workflow_dispatch:
@@ -15,14 +11,11 @@ env:
   AWS_REGION: "us-west-2"
 
 jobs:
-  terraform:
+  terraform-troubleshoot:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
-      with:
-        submodules: recursive
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
@@ -30,23 +23,28 @@ jobs:
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
         terraform_version: 1.5.7
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+    - name: Create Terraform CLI Config
+      run: |
+        mkdir -p ~/.terraform.d
+        cat << EOF > ~/.terraformrc
+        credentials "app.terraform.io" {
+          token = "${{ secrets.TF_API_TOKEN }}"
+        }
+        EOF
+        cat ~/.terraformrc
 
-    - name: Terraform Init
-      run: terraform init
+    - name: Troubleshoot Terraform Initialization
+      run: |
+        echo "Terraform version:"
+        terraform version
 
-    - name: Terraform Validate
-      run: terraform validate
+        echo "Listing Terraform providers:"
+        terraform providers
 
-    - name: Terraform Plan
-      id: plan
-      run: terraform plan -out=tfplan
+        echo "Attempting to initialize with verbose debugging:"
+        TF_LOG=TRACE terraform init -backend=true -reconfigure -force-copy 
 
-    - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply -auto-approve tfplan
+    - name: Display Terraform Logs
+      if: failure()
+      run: |
+        cat terraform.log || echo "No terraform log found"
