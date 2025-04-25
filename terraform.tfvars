@@ -12,5 +12,6 @@ rsm_vpn              = "66.98.96.0/20"
 #number of subnets for inspection vpc
 public_subnet_count  = 2
 private_subnet_count = 2
+tgw_subnet_count     = 2
 
 

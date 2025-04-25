@@ -75,6 +75,7 @@ module "inspection_vpc" {
   # Number of subnets to create
   public_subnet_count = var.public_subnet_count
   private_subnet_count = var.private_subnet_count
+  tgw_subnet_count = var.tgw_subnet_count
   
   providers = {
     aws.delegated_account_us-west-2 = aws.delegated_account_us-west-2

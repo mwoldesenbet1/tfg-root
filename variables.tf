@@ -40,3 +40,8 @@ variable "private_subnet_count" {
   type        = number
   default     = 2
 }
+variable "tgw_subnet_count" {
+  description = "Number of TGW attachment subnets to create in the inspection VPC"
+  type        = number
+  default     = 2
+}
